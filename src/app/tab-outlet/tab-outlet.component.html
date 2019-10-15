@@ -1,1 +1,21 @@
-<p>tab-outlet works!</p>
+<ngb-tabset #tabset>
+	<ngb-tab id="{{tab.uniqueId}}" *ngFor="let tab of tabs; let index = index;trackBy: trackByFn">
+		<ng-template ngbTabContent>
+			<div class="p-1">
+				<ng-container *ngIf="tab.component">
+					<ng-container *componentLoader="tab.component;
+                									parameters:tab.data;
+                									providers:tab.providers"></ng-container>
+				</ng-container>
+			</div>
+		</ng-template>
+		<ng-template ngbTabTitle>
+			<div class="title-container" (click)="changeTab(index)">
+				<span>{{tab.title}}</span>
+				<i (click)="removeTab(index)" class="ml-2">
+					+
+				</i>
+			</div>
+		</ng-template>
+	</ngb-tab>
+</ngb-tabset>

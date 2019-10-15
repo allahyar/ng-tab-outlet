@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-warehouses-list',
-  templateUrl: './warehouses-list.component.html',
-  styleUrls: ['./warehouses-list.component.scss']
+  templateUrl: './warehouses-list.component.html'
 })
 export class WarehousesListComponent implements OnInit {
 

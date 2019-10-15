@@ -1,12 +1,29 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {ComponentFactoryResolver, NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterModule, Routes} from '@angular/router';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {FactoryService} from '../../factory.service';
 
-
+const routes: Routes = [
+	{
+		path: '',
+		component: DashboardComponent
+	}
+];
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule
-  ]
+	declarations: [DashboardComponent],
+	imports: [
+		RouterModule.forChild(routes),
+		CommonModule
+	],
+	entryComponents: [DashboardComponent]
 })
-export class DashboardModule { }
+export class DashboardModule {
+	constructor(
+		factoryService: FactoryService,
+		componentFactoryResolver: ComponentFactoryResolver
+	) {
+		factoryService.addFactory(componentFactoryResolver);
+	}
+}
