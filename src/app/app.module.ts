@@ -8,6 +8,7 @@ import {TabOutletComponent} from './tab-outlet/tab-outlet.component';
 import {LayoutComponent} from './pages/layout/layout.component';
 import {ComponentLoaderDirective} from './component-loader.directive';
 import {NgbTabsetModule} from '@ng-bootstrap/ng-bootstrap';
+import { OutletDetectorDirective } from './modules/outlet-detector.directive';
 
 @NgModule({
 	declarations: [
@@ -15,7 +16,8 @@ import {NgbTabsetModule} from '@ng-bootstrap/ng-bootstrap';
 		LoginComponent,
 		TabOutletComponent,
 		LayoutComponent,
-		ComponentLoaderDirective
+		ComponentLoaderDirective,
+		OutletDetectorDirective
 	],
 	imports: [
 		BrowserModule,
@@ -23,6 +25,9 @@ import {NgbTabsetModule} from '@ng-bootstrap/ng-bootstrap';
 		NgbTabsetModule
 	],
 	providers: [],
+	exports: [
+		OutletDetectorDirective
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule {

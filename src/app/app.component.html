@@ -1,7 +1,5 @@
-<a [routerLink]="['/app/dashboard']">Dashboard</a>
-<a [routerLink]="['/app/dashboard2']">Menu</a>
-<a [routerLink]="['/app/warehouses/warehouse/121/user/1211']">Menu 1</a>
-<a [routerLink]="['/app/warehouses']">Menu 1</a>
-<a [routerLink]="['/app/warehouses/warehouse/121']">Menu 3</a>
+<a (click)="openTab('/app/dashboard')">Dashboard</a>
+<a (click)="openTab('/app/dashboard2')">Menu 1</a>
+<a (click)="openTab('/app/warehouses')">Menu 3</a>
 
 <router-outlet></router-outlet>

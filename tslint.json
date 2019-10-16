@@ -87,7 +87,8 @@
 		"use-pipe-transform-interface": true,
 		"indent": false,
 		"align": false,
-		"directive-selector": false
+		"directive-selector": false,
+		"variable-name": false
 	},
 	"rulesDirectory": [
 		"codelyzer"

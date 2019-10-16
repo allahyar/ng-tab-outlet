@@ -8,27 +8,37 @@ import {WarehouseUserCardComponent} from './warehouse-user-card/warehouse-user-c
 import {WarehouseTabsComponent} from './warehouse-tabs/warehouse-tabs.component';
 import {NewWarehousesComponent} from './new-warehouses/new-warehouses.component';
 import {FactoryService} from '../../factory.service';
+import {WarehousesComponent} from './warehouses.component';
 
 
 const routes: Routes = [
-	{path: '', component: WarehousesListComponent},
-	{path: 'new', component: NewWarehousesComponent},
 	{
-		path: 'warehouse',
+		path: '',
+		component: WarehousesComponent,
 		children: [
-			{path: '', redirectTo: '/app/warehouses', pathMatch: 'full'},
+			{path: 'new', component: NewWarehousesComponent},
 			{
-				path: ':id',
+				path: '',
+				component: WarehousesListComponent
+			},
+			{
+				path: 'warehouse',
 				children: [
+					{path: '', redirectTo: '/app/warehouses', pathMatch: 'full'},
 					{
-						path: '',
-						component: WarehouseTabsComponent,
+						path: ':id',
 						children: [
-							{path: 'card', component: WarehouseCardComponent},
-							{path: 'users', component: WarehouseUsersListComponent}
+							{
+								path: '',
+								component: WarehouseTabsComponent,
+								children: [
+									{path: 'card', component: WarehouseCardComponent},
+									{path: 'users', component: WarehouseUsersListComponent}
+								]
+							},
+							{path: 'user/:id', component: WarehouseUserCardComponent}
 						]
-					},
-					{path: 'user/:id', component: WarehouseUserCardComponent}
+					}
 				]
 			}
 		]
@@ -43,7 +53,8 @@ const routes: Routes = [
 		WarehouseUsersListComponent,
 		WarehouseUserCardComponent,
 		WarehouseTabsComponent,
-		NewWarehousesComponent
+		NewWarehousesComponent,
+		WarehousesComponent
 	],
 	imports: [
 		RouterModule.forChild(routes),

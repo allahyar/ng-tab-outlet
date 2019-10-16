@@ -4,6 +4,7 @@ import {UUID} from 'angular2-uuid';
 import {Location} from '@angular/common';
 import {take} from 'rxjs/operators';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
+import {UiService} from '../ui.service';
 
 @Component({
 	selector: 'app-tab-outlet',
@@ -15,11 +16,12 @@ export class TabOutletComponent implements OnInit, OnDestroy {
 	public tabs = [];
 	name: any;
 
-	@ViewChild('tabset', { static: true }) public tabsElement: NgbTabset;
+	@ViewChild('tabset', {static: true}) public tabsElement: NgbTabset;
 
 	constructor(private parentContexts: ChildrenOutletContexts,
 				private router: Router,
 				private readonly zone: NgZone,
+				private uiService: UiService,
 				private location: Location) {
 		this.name = name || PRIMARY_OUTLET;
 		this.parentContexts.onChildOutletCreated(this.name, this as any);
@@ -32,10 +34,8 @@ export class TabOutletComponent implements OnInit, OnDestroy {
 		const component = <any> snapshot.routeConfig !.component;
 		const segments = snapshot._urlSegment.segments;
 
-
 		const providers: StaticProvider[] = [];
-		providers.push({provide: ActivatedRoute, useValue: activatedRoute});
-
+		providers.push({provide: ActivatedRoute, useValue: activatedRoute.children});
 
 		this.addView({
 			title: segments[1].path,
@@ -60,7 +60,6 @@ export class TabOutletComponent implements OnInit, OnDestroy {
 	}
 
 
-
 	deactivate() {
 
 	}
@@ -82,7 +81,7 @@ export class TabOutletComponent implements OnInit, OnDestroy {
 	}
 
 	changeTab(index: number) {
-		// this.tabs[index].component._changeDetectorRef.detectChanges();
+		this.uiService.setTabState(true);
 		this.location.replaceState(this.tabs[index].link);
 	}
 }
