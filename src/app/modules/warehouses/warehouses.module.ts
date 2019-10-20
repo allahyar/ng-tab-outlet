@@ -54,7 +54,7 @@ const routes: Routes = [
 		WarehouseUserCardComponent,
 		WarehouseTabsComponent,
 		NewWarehousesComponent,
-		WarehousesComponent
+		WarehousesComponent,
 	],
 	imports: [
 		RouterModule.forChild(routes),

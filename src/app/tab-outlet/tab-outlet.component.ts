@@ -5,6 +5,7 @@ import {Location} from '@angular/common';
 import {take} from 'rxjs/operators';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {UiService} from '../ui.service';
+import {TabsService} from '../services/tabs.service';
 
 @Component({
 	selector: 'app-tab-outlet',
@@ -13,15 +14,15 @@ import {UiService} from '../ui.service';
 })
 export class TabOutletComponent implements OnInit, OnDestroy {
 
-	public tabs = [];
 	name: any;
+	tabs = this.tabsService.getTabs();
 
 	@ViewChild('tabset', {static: true}) public tabsElement: NgbTabset;
 
 	constructor(private parentContexts: ChildrenOutletContexts,
 				private router: Router,
 				private readonly zone: NgZone,
-				private uiService: UiService,
+				private tabsService: TabsService,
 				private location: Location) {
 		this.name = name || PRIMARY_OUTLET;
 		this.parentContexts.onChildOutletCreated(this.name, this as any);
@@ -49,7 +50,7 @@ export class TabOutletComponent implements OnInit, OnDestroy {
 
 
 	addView(tab: any) {
-		this.tabs.push(tab);
+		this.tabsService.setTab(tab);
 		this.zone.onStable
 			.pipe(take(1))
 			.subscribe(() => this.tabsElement.select(tab.uniqueId));
@@ -65,8 +66,9 @@ export class TabOutletComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		this.tabs = [];
+		this.tabsService.destroy();
 		this.parentContexts.onChildOutletDestroyed(this.name);
+		console.log('tab-outlet destroy');
 	}
 
 	trackByFn(index, item) {
@@ -81,8 +83,11 @@ export class TabOutletComponent implements OnInit, OnDestroy {
 	}
 
 	changeTab(index: number) {
-		this.uiService.setTabState(true);
+		const uuid = this.tabsService.getTabs()[index].uniqueId;
+		console.log(uuid);
+		this.tabsService._uuidSelected.next(uuid);
 		this.location.replaceState(this.tabs[index].link);
 	}
+
 }
 

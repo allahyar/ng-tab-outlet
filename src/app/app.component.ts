@@ -1,21 +1,26 @@
 import {Component} from '@angular/core';
 import {UiService} from './ui.service';
 import {Router} from '@angular/router';
+import {TabsService} from './services/tabs.service';
 
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html'
 })
 export class AppComponent {
+
 	title = 'tab-outlet';
 
-	constructor(private uiService: UiService,
-				private router: Router) {
+	constructor(private router: Router,
+				private tabsService: TabsService) {
 
 	}
 
 	openTab(url) {
-		this.uiService.setTabState(false);
-		return this.router.navigateByUrl(url);
+		this.tabsService._uuidSelected.next(null);
+		console.log('open tab');
+		setTimeout(() => {
+			this.router.navigateByUrl(url);
+		}, 1000);
 	}
 }
