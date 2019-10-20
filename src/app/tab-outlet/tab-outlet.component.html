@@ -5,8 +5,9 @@
 				<ng-container *ngIf="tab.component">
 					<ng-container *componentLoader="tab.component;
                 									parameters:tab.data;
-                									uuid:tab.uniqueId;
-                									providers:tab.providers"></ng-container>
+                									uniqueId:tab.uniqueId;
+                									providers:tab.providers">
+					</ng-container>
 				</ng-container>
 			</div>
 		</ng-template>

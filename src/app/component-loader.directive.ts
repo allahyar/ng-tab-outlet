@@ -7,7 +7,7 @@ import {
 	OnInit,
 	StaticProvider,
 	Type,
-	ViewContainerRef
+	ViewContainerRef, ViewRef
 } from '@angular/core';
 import {FactoryService} from './factory.service';
 import {Outlet} from './classes/outlet';
@@ -21,16 +21,14 @@ export class ComponentLoaderDirective implements OnInit, OnDestroy {
 
 	isAlive = true;
 
-	componentRef: ComponentRef<any>;
-
 	@Input('componentLoader')
 	component: Type<any>;
 
 	@Input('componentLoaderParameters')
 	parameters: any;
 
-	@Input('componentLoaderUuid')
-	uuid: any;
+	@Input('componentLoaderUniqueId')
+	uniqueId: any;
 
 	@Input('componentLoaderProviders')
 	providers: StaticProvider[];
@@ -51,18 +49,19 @@ export class ComponentLoaderDirective implements OnInit, OnDestroy {
 		const componentFactory = this.factoryService.getFactory(this.component);
 		const localInjector = Injector.create(this.providers || [], this.injector);
 
-		this.componentRef = this.viewContainerRef.createComponent<any>(
+		const componentRef = this.viewContainerRef.createComponent<any>(
 			componentFactory,
 			undefined,
 			localInjector
 		);
 
 
-		const uuid = this.componentRef.instance.uuid;
-		if (uuid) {
-			uuid.next(this.uuid);
-			this.tabsService._uuidSelected.next(this.uuid);
+		const uniqueId = componentRef.instance.uuid;
+		if (uniqueId) {
+			uniqueId.next(this.uniqueId);
+			this.tabsService._uuidSelected.next(this.uniqueId);
 		}
+
 	}
 
 

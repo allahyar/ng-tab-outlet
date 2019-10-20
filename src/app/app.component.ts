@@ -18,9 +18,6 @@ export class AppComponent {
 
 	openTab(url) {
 		this.tabsService._uuidSelected.next(null);
-		console.log('open tab');
-		setTimeout(() => {
-			this.router.navigateByUrl(url);
-		}, 1000);
+		this.router.navigateByUrl(url);
 	}
 }

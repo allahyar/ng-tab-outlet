@@ -1,22 +1,22 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
-import {UiService} from '../../ui.service';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewRef} from '@angular/core';
 import {TabsService} from '../../services/tabs.service';
 import {Outlet} from '../../classes/outlet';
 import {BehaviorSubject} from 'rxjs';
 
 @Component({
+	selector: 'warehouses',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-       <!--       {{uuid.getValue()}}-->
-       {{isActivated}}
-       <router-outlet *ngIf="isActivated"></router-outlet>
+        {{uuid.getValue()}}
+        {{isActivated}}
+        <router-outlet *ngIf="isActivated"></router-outlet>
 	`
 })
 export class WarehousesComponent extends Outlet implements OnInit, OnDestroy {
 
 	uuid = new BehaviorSubject(null);
 
-	isActivated: boolean;
+	isActivated = true;
 
 	constructor(public tabsService: TabsService,
 				private cd: ChangeDetectorRef) {
@@ -27,19 +27,16 @@ export class WarehousesComponent extends Outlet implements OnInit, OnDestroy {
 			this.isActivated = false;
 			const uniqueIdSelected = this.tabsService._uuidSelected.getValue();
 
-			console.log('uuid', uniqueId, uniqueIdSelected);
-
 			if ((uniqueIdSelected || uniqueId) && uniqueId === uniqueIdSelected) {
 				this.isActivated = true;
 			}
 
+
 			setTimeout(() => {
 				if (!(this.cd as ViewRef).destroyed) {
 					cd.detectChanges();
-					console.log('detectChanges');
 				}
 			});
-
 		});
 
 	}
@@ -49,5 +46,4 @@ export class WarehousesComponent extends Outlet implements OnInit, OnDestroy {
 
 	ngOnDestroy() {
 	}
-
 }

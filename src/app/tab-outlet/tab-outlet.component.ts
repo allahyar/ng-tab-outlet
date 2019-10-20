@@ -1,4 +1,13 @@
-import {Component, ComponentFactoryResolver, ComponentRef, NgZone, OnDestroy, OnInit, StaticProvider, ViewChild} from '@angular/core';
+import {
+	Component,
+	ComponentFactoryResolver,
+	ComponentRef,
+	NgZone,
+	OnDestroy,
+	OnInit,
+	StaticProvider,
+	ViewChild
+} from '@angular/core';
 import {ActivatedRoute, ChildrenOutletContexts, PRIMARY_OUTLET, Router} from '@angular/router';
 import {UUID} from 'angular2-uuid';
 import {Location} from '@angular/common';
@@ -8,11 +17,11 @@ import {UiService} from '../ui.service';
 import {TabsService} from '../services/tabs.service';
 
 @Component({
-	selector: 'app-tab-outlet',
+	selector: 'tab-outlet',
 	exportAs: 'outlet',
 	templateUrl: './tab-outlet.component.html'
 })
-export class TabOutletComponent implements OnInit, OnDestroy {
+export class TabOutletComponent implements OnDestroy {
 
 	name: any;
 	tabs = this.tabsService.getTabs();
@@ -32,11 +41,11 @@ export class TabOutletComponent implements OnInit, OnDestroy {
 				 resolver: ComponentFactoryResolver | null) {
 
 		const snapshot = (activatedRoute as any)._futureSnapshot;
-		const component = <any> snapshot.routeConfig !.component;
+		const component = <any>snapshot.routeConfig !.component;
 		const segments = snapshot._urlSegment.segments;
 
 		const providers: StaticProvider[] = [];
-		providers.push({provide: ActivatedRoute, useValue: activatedRoute.children});
+		providers.push({provide: ActivatedRoute, useValue: activatedRoute});
 
 		this.addView({
 			title: segments[1].path,
@@ -51,15 +60,10 @@ export class TabOutletComponent implements OnInit, OnDestroy {
 
 	addView(tab: any) {
 		this.tabsService.setTab(tab);
-		this.zone.onStable
-			.pipe(take(1))
-			.subscribe(() => this.tabsElement.select(tab.uniqueId));
+		// this.zone.onStable
+		// 	.pipe(take(1))
+		// 	.subscribe(() => this.tabsElement.select(tab.uniqueId));
 	}
-
-	ngOnInit() {
-
-	}
-
 
 	deactivate() {
 
@@ -68,7 +72,6 @@ export class TabOutletComponent implements OnInit, OnDestroy {
 	ngOnDestroy(): void {
 		this.tabsService.destroy();
 		this.parentContexts.onChildOutletDestroyed(this.name);
-		console.log('tab-outlet destroy');
 	}
 
 	trackByFn(index, item) {
@@ -83,9 +86,8 @@ export class TabOutletComponent implements OnInit, OnDestroy {
 	}
 
 	changeTab(index: number) {
-		const uuid = this.tabsService.getTabs()[index].uniqueId;
-		console.log(uuid);
-		this.tabsService._uuidSelected.next(uuid);
+		const uniqueId = this.tabsService.getTabs()[index].uniqueId;
+		this.tabsService._uuidSelected.next(uniqueId);
 		this.location.replaceState(this.tabs[index].link);
 	}
 
