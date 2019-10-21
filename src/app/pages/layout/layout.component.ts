@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {TabsService} from '../../services/tabs.service';
 
 @Component({
 	selector: 'app-layout',
@@ -6,10 +8,17 @@ import {Component, OnInit} from '@angular/core';
 })
 export class LayoutComponent implements OnInit {
 
-	constructor() {
+	constructor(private route: ActivatedRoute,
+				private tabsService: TabsService,
+				private router: Router) {
 	}
 
+
 	ngOnInit() {
+	}
+
+	navigate(path) {
+		this.router.navigate([path], {relativeTo: this.route});
 	}
 
 }

@@ -16,7 +16,9 @@ const routes: Routes = [
 		path: '',
 		component: WarehousesComponent,
 		children: [
-			{path: 'new', component: NewWarehousesComponent},
+			{
+				path: 'new', component: NewWarehousesComponent
+			},
 			{
 				path: '',
 				component: WarehousesListComponent

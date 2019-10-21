@@ -1,8 +1,8 @@
-<ngb-tabset #tabset [destroyOnHide]="false">
+<ngb-tabset #tabset [destroyOnHide]="false" (tabChange)="tabChange($event)">
 	<ngb-tab id="{{tab.uniqueId}}" *ngFor="let tab of tabs; let index = index;trackBy: trackByFn">
 		<ng-template ngbTabContent>
 			<div class="p-1">
-				<ng-container *ngIf="tab.component">
+				<ng-container *ngIf="tab.component && tab.isActivate">
 					<ng-container *componentLoader="tab.component;
                 									parameters:tab.data;
                 									uniqueId:tab.uniqueId;
@@ -12,7 +12,7 @@
 			</div>
 		</ng-template>
 		<ng-template ngbTabTitle>
-			<div class="title-container" (click)="changeTab(index)">
+			<div class="title-container">
 				<span>{{tab.title}}</span>
 				<i (click)="removeTab(index)" class="ml-2">
 					+

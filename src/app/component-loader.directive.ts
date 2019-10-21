@@ -56,11 +56,11 @@ export class ComponentLoaderDirective implements OnInit, OnDestroy {
 		);
 
 
-		const uniqueId = componentRef.instance.uuid;
-		if (uniqueId) {
-			uniqueId.next(this.uniqueId);
-			this.tabsService._uuidSelected.next(this.uniqueId);
-		}
+		// const uniqueId = componentRef.instance.uuid;
+		// if (uniqueId) {
+		// 	uniqueId.next(this.uniqueId);
+		// 	this.tabsService._uuidSelected.next(this.uniqueId);
+		// }
 
 	}
 

@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {UiService} from './ui.service';
 import {Router} from '@angular/router';
 import {TabsService} from './services/tabs.service';
 
@@ -11,13 +10,7 @@ export class AppComponent {
 
 	title = 'tab-outlet';
 
-	constructor(private router: Router,
-				private tabsService: TabsService) {
-
+	constructor(private router: Router) {
 	}
 
-	openTab(url) {
-		this.tabsService._uuidSelected.next(null);
-		this.router.navigateByUrl(url);
-	}
 }

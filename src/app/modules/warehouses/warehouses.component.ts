@@ -1,49 +1,58 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewRef} from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	NgZone,
+	OnDestroy,
+	ViewChild,
+	ViewRef
+} from '@angular/core';
 import {TabsService} from '../../services/tabs.service';
 import {Outlet} from '../../classes/outlet';
-import {BehaviorSubject} from 'rxjs';
+import {Router, RouterOutlet} from '@angular/router';
 
 @Component({
 	selector: 'warehouses',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-        {{uuid.getValue()}}
-        {{isActivated}}
-        <router-outlet *ngIf="isActivated"></router-outlet>
+       <router-outlet #outlet *ngIf="isActivated"></router-outlet>
 	`
 })
-export class WarehousesComponent extends Outlet implements OnInit, OnDestroy {
+export class WarehousesComponent extends Outlet implements OnDestroy {
 
-	uuid = new BehaviorSubject(null);
+	@ViewChild(RouterOutlet, {static: false}) outlet: RouterOutlet;
 
 	isActivated = true;
 
-	constructor(public tabsService: TabsService,
-				private cd: ChangeDetectorRef) {
+	constructor(
+		private tabsService: TabsService,
+		private router: Router,
+		private zone: NgZone,
+		private cd: ChangeDetectorRef) {
 		super();
 
-		this.tabsService._uuidSelected.subscribe(uniqueId => {
-
-			this.isActivated = false;
-			const uniqueIdSelected = this.tabsService._uuidSelected.getValue();
-
-			if ((uniqueIdSelected || uniqueId) && uniqueId === uniqueIdSelected) {
-				this.isActivated = true;
-			}
-
-
+		this.zone.run(() => {
 			setTimeout(() => {
 				if (!(this.cd as ViewRef).destroyed) {
-					cd.detectChanges();
+					this.outlet.deactivate();
+					this.isActivated = false;
 				}
-			});
+			}, 2000);
 		});
 
+
+		// this.tabsService._items.subscribe(v => {
+		// 	// this.isActivated = false;
+		// 	setTimeout(() => {
+		// 		if (!(this.cd as ViewRef).destroyed) {
+		// 			cd.detectChanges();
+		// 		}
+		// 	});
+		// });
 	}
 
-	ngOnInit() {
+	ngOnDestroy(): void {
+		console.log('ok');
 	}
 
-	ngOnDestroy() {
-	}
 }
